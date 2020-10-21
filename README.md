@@ -3,6 +3,25 @@ hook any x86 raw call instruction
 
 easy to use, usage as follow:
 ```
+
+#include <iostream>
+#include <windows.h>
+#include "AnyCallHookerX86.h"
+
+int thisismytest2(int p1, int p2)
+{
+	printf("internal %d,%d\n", p1, p2);
+	return 1;
+}
+
+int thisismytest(int p1, int p2)
+{
+	printf("%s:%d\n", __FUNCDNAME__, p1 + p2);
+	//address of this call instruction is thisismytest + 0x24;
+	thisismytest2(p1, p2);
+	return 1;
+}
+
 void myhookhandler(_regcontext_ context)
 {
 	printf("enter:%s\n", __FUNCDNAME__);
@@ -25,4 +44,5 @@ int main()
 	thisismytest(1, 2);
 
 }
+
 ```
